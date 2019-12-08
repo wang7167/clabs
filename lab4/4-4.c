@@ -8,70 +8,68 @@
 int getop(char[]);
 void push(double);
 double pop(void);
-main()
-{
+int main(){
     int type;
     double op1;
     double op2;
     char s[MAXOP];
     while((type = getop(s))!=EOF){
-        switch (type)
-        {
-        case NUMBER:
+        switch (type){
+            case NUMBER:
             push(atof(s));
             break;
-        case'+':
+            case'+':
             push(pop()+pop());
             break;
-        case'*':
+            case'*':
             push(pop()*pop());
             break;
-        case'-':
+            case'-':
             op2=pop();
             push(pop()-op2);
             break;
-        case '%':
+            case '%':
             op1 = pop();
             op2 = pop();
-        if (op1 != (int)op1 || op2 != (int)op2)
+            if (op1 != (int)op1 || op2 != (int)op2)
                 printf("error\n");
-        else if (op1 == 0)
+            else if (op1 == 0)
                 printf("error: zero divisor\n");
-        else if (op2 < 0)
+            else if (op2 < 0)
             push((int)op2 % (int)op1);
-        else if (op1 < 0)
+            else if (op1 < 0)
             push((int)op2 % (int)op1);
-        else
-            push((int)op2 % (int)op1);
+            else
+                push((int)op2 % (int)op1);
             break;
-        case'p':
+            case'p':
             op2 = pop();
             printf("\t%.8g\n",op2);
             push(op2);
             break;
-        case'c':
+            case'c':
             op2 = pop();
             push(op2);
             push(op2);
             break;
             break;
-        case's':
+            case's':
             op1=pop();
             op2=pop();
             push(op1);
             push(op2);
             break;
-        case'/':
+            case'/':
             op2 = pop();
-        if(op2 !=0.0)
+            if(op2 !=0.0)
             push(pop()/op2);
-        else
+            else
             printf("error:zero divisor\n");
             break;
-        case'\n':
+            case'\n':
             printf("\t%.8g\n",pop()); 
             break;
-        default:
+            default:
             printf("error:unknown command %s\n",s);
             break;   
         }
@@ -106,19 +104,19 @@ void push(double f){
         while((s[0]=c=getch())==' '||c=='\t')
         ;
         s[1] = '\0';
-    if(!isdigit(c)&&c!='.')
+        if(!isdigit(c)&&c!='.')
         return c;
         i = 0;
-    if(isdigit(c))
-    while(isdigit(s[++i]=c=getch()))
+        if(isdigit(c))
+        while(isdigit(s[++i]=c=getch()))
         ;
-    if(c=='.')
-    while(isdigit(s[++i]=c=getch()))
+        if(c=='.')
+        while(isdigit(s[++i]=c=getch()))
         ;
         s[i]='\0';
-    if(c!=EOF)
+        if(c!=EOF)
         ungetch(c);
-    return NUMBER;
+        return NUMBER;
     }
     
     #define BUFSIZE 100

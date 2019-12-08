@@ -38,13 +38,13 @@ int main()
                 printf("error: zero divisor\n");
             break;
         case '\n':
-            printf("\t%.8gg\n",pop());
+            printf("\t%.8g\n",pop());
             break;
         case's':
         case '%':
             op2 = pop();
             if(op2 != 0.0)
-            push(fmod(pop() , op2));
+            push((pop() / op2));
             else
                 printf("error: zero divisor\n");
             break;
@@ -67,7 +67,6 @@ void push(double f)
     val[sp++] = f;
     else
     printf("error: stack full, can't push %g\n",f);
-    
 }
 
 double pop(void)
