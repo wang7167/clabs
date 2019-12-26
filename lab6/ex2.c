@@ -1,45 +1,40 @@
 #include<stdio.h>
+#include<stdlib.h>
 
-int isYear(int year)    
+static char daytab[2][13]={
+    {0,31,28,31,30,31,30,31,31,30,31,30,31},
+    {0,31,29,31,30,31,30,31,31,30,31,30,31}
+};
+
+int day_of_year(int year,int month,int day)
 {
-    return (year%4==0)&&( year %400==0 || year %100!= 0) ? 1:0;
+    int i,leap;
+    leap = year%4 == 0 &&year%100 !=0||year%400 == 0;
+    for(i=1;i<month;i++)
+    day+=daytab[leap][i];
+    return day;
 }
-int getDayOfMonth(int year , int month) 
+
+void month_day(int year,int yearday,int *pmonth,int *pday)
 {
-    int dayArr[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
-    return (month == 2 && isYear(year)==1) ? dayArr[month]+1 : dayArr[month] ;
+    int i,leap;
+    leap = year%4 == 0 && year%100 != 0||year%400 ==0;
+    for(i = 1;yearday>daytab[leap][i];i++)
+    yearday -= daytab[leap][i];
+    *pmonth = i;
+    *pday = yearday;
 }
-int getTotalDay(int year1,int month1,int day1,int year2,int month2,int day2){
-    long total = 0;
-    for(int year = year1; year < year2 ;  year ++ )
-    {
-        total = total + 365;
-        if(isYear(year)==1) 
-            total ++;
-    }
-    for(int month =1; month < month2; month ++ )
-    {
-        total = total + getDayOfMonth(year2,month);
-    }
-    total = total + day2;
-    for(int month=1 ; month < month1; month ++ )
-    {
-         total = total - getDayOfMonth(year1,month);
-    }
-    return total - day1;
-}
-int main()
+
+int main(int argc,char *argv[])
 {
-    int year1 ,month1,day1;
-    int year2, month2,day2;
-    do{
-            printf("please input year-month-day\n : ");
-            scanf("%d-%d-%d", &year1,&month1,&day1);
-    } while( year1 <0 || month1<1 || month1>12 || day1<1|| day1> getDayOfMonth(year1,month1));
-    do{ 
-            printf("Input year2-month2-day2\n : ");
-            scanf("%d-%d-%d", &year2,&month2,&day2);
-    } while( year2 <0 || year2 <year1|| month2<1 || month2>12 || day2<1|| day2> getDayOfMonth(year2,month2));
-    printf("we have: %ld  days between \n", getTotalDay(year1,month1,day1,year2,month2,day2));
+    int day=0;
+    for(int i = atof(argv[1])+1;i<atof(argv[4]);i++){
+        day += day_of_year(i,12,31);}
+    if(atof(argv[1]) < atof(argv[4]))
+        day += day_of_year(atof(argv[4]),atof(argv[5]),atof(argv[6])) + day_of_year(atof(argv[1]),12,31) - day_of_year(atof(argv[1]),atof(argv[2]),atof(argv[3])) + 1;
+
+    else if(atof(argv[1]) == atof(argv[4]))
+        day += day_of_year(atof(argv[4]),atof(argv[5]),atof(argv[6])) - day_of_year(atof(argv[1]),atof(argv[2]),atof(argv[3])) + 1;
+    printf("%d\n",day);
     return 0;
 }
