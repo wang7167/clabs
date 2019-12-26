@@ -1,28 +1,25 @@
 #include <stdio.h>
-#include <ctype.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-#define NUMBER '0'
 #define MAXOP 100
-
+#define NUMBER '0'
 int getop(char s[]);
 void push(double);
 double pop(void);
 char s[MAXOP];
-
-main(int argc,char *argv[])
+int main(int argc, char *argv[])
 {
     int type;
-    double op;
-    int i = 1;
+    double op2;
+    int j = 1;
     int a = argc;
-    while((argc--)>0 && i<a)
-    {
-    type = getop(argv[i++]);
+    while((argc--)>0 && j<a){
+    type = getop(argv[j++]);
         switch (type)
         {
         case NUMBER:
-            push(atof(argv[i-1]));
+            push(atof(argv[j-1]));
             break;
         case '+':
             push(pop() + pop());
@@ -31,46 +28,44 @@ main(int argc,char *argv[])
             push(pop() * pop());
             break;
         case '-':
-            op = pop();
-            push(pop() - op);
+            op2 = pop();
+            push(pop() - op2);
             break;
         case '/':
-            op = pop();
-            if (op != 0.0)
-                push(pop() / op);
+            op2 = pop();
+            if (op2 != 0.0)
+                push(pop() / op2);
             else
-                printf("zero warning\n");
+                printf("error:zero divisor\n");
             break;
         default:
-            printf("unknown command %s\n", s);
+            printf("error:unknown command %s\n", s);
             argc=1;
             break;
         }
     }
-    printf("\t%.2g\n",pop());
+    printf("\t%.8g\n",pop());
     return 0;
 }
-
 #define MAXVAL 100
-int p = 0;
+int sp = 0;
 double val[MAXVAL];
 void push(double f)
 {
-    if (p < MAXVAL)
-        val[p++] = f;
+    if (sp < MAXVAL)
+        val[sp++] = f;
     else
     {
-        printf("stack is full %g\n", f);
+        printf("error:stack full,can't push %g\n", f);
     }
 }
-
 double pop(void)
 {
-    if (p > 0)
-        return val[--p];
+    if (sp > 0)
+        return val[--sp];
     else
     {
-        printf("stack is empty \n");
+        printf("error:stack empty\n");
         return 0.0;
     }
 }
@@ -80,5 +75,6 @@ int getop(char s[])
     if (*s> '9' || *s < '0')
         return *s;
     else
-        return NUMBER;       
+        return NUMBER;
+        
 }
