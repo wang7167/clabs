@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<string.h>
-
 int strindex (char s[], char t[])
 {
     int i,j,k,pos=0;
@@ -14,7 +13,7 @@ int strindex (char s[], char t[])
     return pos-1;
     return -1;
 }
-int main(){
+main(){
     char a[100];
     char b[100];
     printf("please input the chain of characters\n");
